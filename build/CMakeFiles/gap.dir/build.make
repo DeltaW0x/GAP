@@ -60,15 +60,15 @@ include CMakeFiles/gap.dir/flags.make
 CMakeFiles/gap.dir/src/main.cpp.o: CMakeFiles/gap.dir/flags.make
 CMakeFiles/gap.dir/src/main.cpp.o: ../src/main.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/proto/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/gap.dir/src/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/gap.dir/src/main.cpp.o -c /home/delta/proto/src/main.cpp
+	/usr/bin/arm-linux-gnueabihf-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/gap.dir/src/main.cpp.o -c /home/delta/proto/src/main.cpp
 
 CMakeFiles/gap.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/gap.dir/src/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/delta/proto/src/main.cpp > CMakeFiles/gap.dir/src/main.cpp.i
+	/usr/bin/arm-linux-gnueabihf-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/delta/proto/src/main.cpp > CMakeFiles/gap.dir/src/main.cpp.i
 
 CMakeFiles/gap.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/gap.dir/src/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/delta/proto/src/main.cpp -o CMakeFiles/gap.dir/src/main.cpp.s
+	/usr/bin/arm-linux-gnueabihf-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/delta/proto/src/main.cpp -o CMakeFiles/gap.dir/src/main.cpp.s
 
 # Object files for target gap
 gap_OBJECTS = \

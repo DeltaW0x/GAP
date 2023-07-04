@@ -20,10 +20,10 @@ private:
 public:
     ProtogenFace()
     {
-        protoShader = new Shader("/home/delta/proto/build/ProtoFace.vs", 
-                                 "/home/delta/proto/build/ProtoFace.fs");
-                                 
-        protoMesh = new Mesh("/home/delta/proto/build/protoFaceMesh.ms");
+        protoShader = new Shader("/home/delta/proto/src/resources/shaders/ProtoFace.vs", 
+                                 "/home/delta/proto/src/resources/shaders/ProtoFace.fs");
+
+        protoMesh = new Mesh("/home/delta/proto/src/resources/meshes/protoFaceMesh.ms");
 
         glGenBuffers(1, &vbo);
     }
