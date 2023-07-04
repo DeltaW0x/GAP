@@ -11,7 +11,7 @@
 #include "../utility/shader.hpp"
 #include "../utility/mesh.hpp"
 
-class ProtogenFace
+class ProtogenBack
 {
 private:
     Shader *protoShader;
@@ -22,17 +22,17 @@ private:
 
     mat4 model, view, projection, mvp;
 public:
-    ProtogenFace()
+    ProtogenBack()
     {
         protoShader = new Shader("/home/delta/proto/src/resources/shaders/BasicShader.vs",
                                  "/home/delta/proto/src/resources/shaders/BasicShader.fs");
 
-        protoMesh = new Mesh("/home/delta/proto/src/resources/meshes/ProtoFace.meshdat");
+        protoMesh = new Mesh("/home/delta/proto/src/resources/meshes/ProtoBack.meshdat");
 
         glGenBuffers(1, &vbo);
     }
 
-    ~ProtogenFace()
+    ~ProtogenBack()
     {
         delete protoShader;
         delete protoMesh;
@@ -63,7 +63,7 @@ public:
         glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, (float *)mvp);
 
         GLint color = glGetUniformLocation(protoShader->getProgramID(), "color");
-        glUniform3f(color, 0.0f, 0.0f, 1.0f);
+        glUniform3f(color, 0.0f, 0.0f, 0.0f);
 
         posLoc = glGetAttribLocation(protoShader->getProgramID(), "pos");
         glEnableVertexAttribArray(posLoc);

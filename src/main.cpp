@@ -8,7 +8,7 @@
 #include <cglm/cglm.h>
 
 #include "objects/protogenFace.hpp"
-
+#include "objects/protogenBack.hpp"
 #define MATRIX_WIDTH 128
 #define MATRIX_HEIGHT 32
 
@@ -17,8 +17,8 @@
 static const EGLint configAttribs[] = {
     EGL_SURFACE_TYPE, EGL_PBUFFER_BIT, EGL_BLUE_SIZE, 8, EGL_GREEN_SIZE, 8,
     EGL_RED_SIZE, 8, EGL_DEPTH_SIZE, 8,
-    // EGL_SAMPLE_BUFFERS, 1,
-    // EGL_SAMPLES, 4,
+    EGL_SAMPLE_BUFFERS, 1,
+    EGL_SAMPLES, 4,
     EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT, EGL_NONE};
 
 static const EGLint pbufferAttribs[] = {
@@ -144,7 +144,8 @@ int main(int argv, char **argc)
 
     desiredWidth = pbufferAttribs[1];
     desiredHeight = pbufferAttribs[3];
-
+    
+    glEnable(GL_DEPTH_TEST);
     glViewport(0, 0, desiredWidth, desiredHeight);
 
     GLint viewport[4];
@@ -159,12 +160,13 @@ int main(int argv, char **argc)
     }
 #pragma endregion
 
-    glClearColor(0.11f, 0.11f, 0.11f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     ProtogenFace *ptx = new ProtogenFace();
+    ProtogenBack *ptb = new ProtogenBack();
+    ptb->render();
     ptx->render();
-
 #pragma region SAVE_BUFFER
 
     unsigned char *buffer = (unsigned char *)malloc(desiredWidth * desiredHeight * 3);
