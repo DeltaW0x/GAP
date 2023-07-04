@@ -1,0 +1,3 @@
+/home/delta/proto/build/CMakeFiles/rebuild_cache.dir
+/home/delta/proto/build/CMakeFiles/gap.dir
+/home/delta/proto/build/CMakeFiles/edit_cache.dir
