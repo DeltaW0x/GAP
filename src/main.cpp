@@ -9,8 +9,8 @@
 
 #include "objects/protogenFace.hpp"
 
-#define MATRIX_WIDTH 128
-#define MATRIX_HEIGHT 32
+#define MATRIX_WIDTH 800
+#define MATRIX_HEIGHT 800
 
 #pragma region EGL_CRAP
 
