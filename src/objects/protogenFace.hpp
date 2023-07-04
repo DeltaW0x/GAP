@@ -1,12 +1,16 @@
 #pragma once
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
+
+#include <cglm/cglm.h> 
 
 #include "../utility/shader.hpp"
 #include "../utility/mesh.hpp"
-#include <iostream>
+
 
 class ProtogenFace
 {
@@ -26,6 +30,16 @@ public:
         protoMesh = new Mesh("/home/delta/proto/src/resources/meshes/protoFaceMesh.ms");
 
         glGenBuffers(1, &vbo);
+ 
+       for(auto i: protoMesh->getIndexBuffer()){
+        std::cout << i << std::endl;
+       }
+       for(auto v: protoMesh->getVertexBuffer()){
+        std::cout << v << std::endl;
+       }
+
+       std::cout << std::endl;
+       std::cout << protoMesh->getIndexCount();
     }
 
     ~ProtogenFace()
@@ -35,7 +49,8 @@ public:
     }
 
     void render()
-    {
+    {        
+        
         protoShader->use();
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBufferData(GL_ARRAY_BUFFER, protoMesh->getVertexBufferSize(), protoMesh->getVertexBuffer().data(), GL_STATIC_DRAW);
