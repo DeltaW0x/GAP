@@ -21,6 +21,7 @@ private:
     GLuint vbo;
     GLint posLoc;
 
+    mat4 model,view,projection,mvp;
 public:
     ProtogenFace()
     {
@@ -30,16 +31,8 @@ public:
         protoMesh = new Mesh("/home/delta/proto/src/resources/meshes/protoFaceMesh.ms");
 
         glGenBuffers(1, &vbo);
- 
-       for(auto i: protoMesh->getIndexBuffer()){
-        std::cout << i << std::endl;
-       }
-       for(auto v: protoMesh->getVertexBuffer()){
-        std::cout << v << std::endl;
-       }
 
-       std::cout << std::endl;
-       std::cout << protoMesh->getIndexCount();
+
     }
 
     ~ProtogenFace()
@@ -52,8 +45,23 @@ public:
     {        
         
         protoShader->use();
+        glm_mat4_identity(view);
+        glm_mat4_identity(model);
+        glm_mat4_identity(projection);
+        glm_mat4_identity(mvp);
+
+        vec3 viewVec = {0.0f,0.0f,-3.0f};
+        glm_ortho(-4.0f,4.0f,-1.0f,1.0f,0.001f,1000.0f,projection);
+        glm_translate(view,viewVec);
+
+        glm_mat4_mul(projection,view,mvp);
+        glm_mat4_mul(mvp,model,mvp);
+
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBufferData(GL_ARRAY_BUFFER, protoMesh->getVertexBufferSize(), protoMesh->getVertexBuffer().data(), GL_STATIC_DRAW);
+
+        GLint mvpLoc = glGetUniformLocation(protoShader->getProgramID(), "mvp");
+        glUniformMatrix4fv(mvpLoc,1,GL_FALSE,(float*)mvp);
 
         posLoc = glGetAttribLocation(protoShader->getProgramID(), "pos");
         glEnableVertexAttribArray(posLoc);
