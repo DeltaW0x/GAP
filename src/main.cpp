@@ -18,6 +18,13 @@ using rgb_matrix::Canvas;
 
 #pragma region EGL_CRAP
 
+volatile bool interrupt_received = false;
+static void InterruptHandler(int signo) {
+  interrupt_received = true;
+  exit(0); 
+}
+
+
 static const EGLint configAttribs[] = {
     EGL_SURFACE_TYPE, EGL_PBUFFER_BIT, EGL_BLUE_SIZE, 8, EGL_GREEN_SIZE, 8,
     EGL_RED_SIZE, 8, EGL_DEPTH_SIZE, 8,
@@ -91,7 +98,22 @@ static const char *eglGetErrorStr()
 
 int main(int argv, char **argc)
 {
-RGBMatrix::Options defaults;
+    RGBMatrix::Options defaults;
+    defaults.hardware_mapping = "adafruit-hat";
+    defaults.rows = 32;
+    defaults.cols = 64;
+    defaults.chain_length = 1;
+    defaults.panel_type = "FM6126A";
+    defaults.show_refresh_rate = true;
+    defaults.parallel = 1;
+
+    rgb_matrix::RuntimeOptions runtime;
+    runtime.gpio_slowdown = 0;
+    runtime.drop_privileges = 1;
+
+    //Canvas *canvas = RGBMatrix::CreateFromOptions(defaults,runtime);
+    signal(SIGTERM, InterruptHandler);
+    signal(SIGINT, InterruptHandler);
 
 #pragma region OTHER_EGL_CRAP
     EGLDisplay display;
@@ -166,33 +188,16 @@ RGBMatrix::Options defaults;
     }
 #pragma endregion
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    while(true){
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    ProtogenFace ptx;
-    ptx.render();
-
-#pragma region SAVE_BUFFER
-
-    unsigned char *buffer = (unsigned char *)malloc(desiredWidth * desiredHeight * 3);
-
-    glReadPixels(0, 0, desiredWidth, desiredHeight, GL_RGB, GL_UNSIGNED_BYTE, buffer);
-
-    FILE *output = fopen("proto.raw", "wb");
-    if (output)
-    {
-        fwrite(buffer, 1, desiredWidth * desiredHeight * 3, output);
-        fclose(output);
+        ProtogenFace face();
+        uint8_t *buffer = (uint8_t*)malloc(desiredWidth*desiredHeight * 3);
+        glReadPixels(0, 0, desiredWidth, desiredHeight, GL_RGB, GL_UNSIGNED_BYTE, buffer);
     }
-    else
-    {
-        fprintf(stderr, "Failed to open file triangle.raw for writing!\n");
-    }
-
-    free(buffer);
-#pragma endregion
-
+    
     eglDestroyContext(display, context);
     eglDestroySurface(display, surface);
     eglTerminate(display);

@@ -5,9 +5,10 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
-#include <nlohmann/json.hpp>
-
-using json = nlohmann::json;
+#include <unordered_map>
+#include <assimp/scene.h>
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
 
 class Mesh
 {
@@ -15,11 +16,7 @@ class Mesh
 public:
     Mesh(const char *path)
     {
-        std::ifstream f(path);
-        json data = json::parse(f);
-
-        m_vertexBuffer = data["BASE_MESH"]["VERTICES"].get<std::vector<float>>();
-        m_indexBuffer = data["BASE_MESH"]["INDICES"].get<std::vector<GLushort>>();
+        
     }
 
     std::vector<float> GetVertexBuffer(){
@@ -40,4 +37,5 @@ public:
 private:
     std::vector<GLushort> m_indexBuffer;
     std::vector<float> m_vertexBuffer;
+    std::unordered_map<std::string,std::vector<float>> m_blendshapesBuffer;
 };
