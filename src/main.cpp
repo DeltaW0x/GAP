@@ -4,11 +4,10 @@
 
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>
-
 #include <cglm/cglm.h>
 
+#include "utility/mesh.hpp"
 #include "objects/protogenFace.hpp"
-#include "objects/protogenBack.hpp"
 #define MATRIX_WIDTH 128
 #define MATRIX_HEIGHT 32
 
@@ -163,10 +162,10 @@ int main(int argv, char **argc)
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    ProtogenFace *ptx = new ProtogenFace();
-    ProtogenBack *ptb = new ProtogenBack();
-    ptb->render();
-    ptx->render();
+
+    ProtogenFace ptx;
+    ptx.render();
+
 #pragma region SAVE_BUFFER
 
     unsigned char *buffer = (unsigned char *)malloc(desiredWidth * desiredHeight * 3);

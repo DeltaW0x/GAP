@@ -3,89 +3,41 @@
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>
 #include <vector>
-#include <string>
 #include <fstream>
-#include <sstream>
 #include <iostream>
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 class Mesh
 {
-private:
-    std::vector<GLushort> indexBuffer;
-    std::vector<float> vertexBuffer;
-
-    GLsizeiptr indexBufferSize;
-    GLsizeiptr vertexBufferSize;
-
-    int indexCount;
-    int vertexCount;
 
 public:
-    Mesh(const char *meshPath)
+    Mesh(const char *path)
     {
-        bool readIndex = false;
+        std::ifstream f(path);
+        json data = json::parse(f);
 
-        std::ifstream meshFile;
-
-        try
-        {
-            meshFile.open(meshPath);
-            for (std::string line; getline(meshFile, line);)
-            {
-
-                if (line == "INDEX")
-                {
-                    readIndex = true;
-                    continue;
-                }
-                if (!readIndex && !line.empty())
-                {
-                    vertexBuffer.push_back(std::stof(line));
-                }
-                else if (readIndex && !line.empty())
-                {
-                    indexBuffer.push_back(static_cast<GLushort>(std::stoul(line)));
-                }
-            }
-        }
-        catch (std::ifstream::failure &e)
-        {
-            std::cout << "ERROR::MESH::FILE_NOT_SUCCESSFULLY_READ: " << e.what() << std::endl;
-        }
-        meshFile.close();
-
-        indexCount = indexBuffer.size();
-        vertexCount = vertexBuffer.size();
-
-        indexBufferSize = sizeof(GLushort) * indexCount;
-        vertexBufferSize = sizeof(float) * vertexCount;
+        m_vertexBuffer = data["BASE_MESH"]["VERTICES"].get<std::vector<float>>();
+        m_indexBuffer = data["BASE_MESH"]["INDICES"].get<std::vector<GLushort>>();
     }
 
-    GLsizeiptr getIndexBufferSize()
-    {
-        return indexBufferSize;
-    }
-    GLsizeiptr getVertexBufferSize()
-    {
-        return vertexBufferSize;
+    std::vector<float> GetVertexBuffer(){
+        return m_vertexBuffer;
     }
 
-    std::vector<GLushort> getIndexBuffer()
-    {
-        return indexBuffer;
-    }
-    std::vector<float> getVertexBuffer()
-    {
-        return vertexBuffer;
+    std::vector<GLushort> GetIndexBuffer(){
+        return m_indexBuffer;
     }
 
-    int getIndexCount()
-    {
-        return indexCount;
+    GLsizeiptr GetVertexBufferSize(){
+        return sizeof(float) * m_vertexBuffer.size();
     }
 
-    int getVertexCount()
-    {
-        return vertexCount;
+    GLsizeiptr GetIndexBufferCount(){
+        return m_indexBuffer.size();
     }
+private:
+    std::vector<GLushort> m_indexBuffer;
+    std::vector<float> m_vertexBuffer;
 };

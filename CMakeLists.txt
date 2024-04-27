@@ -1,17 +1,28 @@
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.22)
 
-project(
-  GAP
-  VERSION 1.0
-  LANGUAGES CXX)
+project(GAP VERSION 1.0 LANGUAGES CXX)
+set (CMAKE_CXX_STANDARD 17)
+include(FetchContent)
 
-  add_executable(gap
+add_executable(${PROJECT_NAME}
     src/main.cpp
     src/objects/protogenFace.hpp
     src/utility/shader.hpp
     src/utility/mesh.hpp)
 
-find_package(cglm REQUIRED)
-target_include_directories(gap PUBLIC /opt/vc/include ${cglm_INCLUDE_DIRS})
-target_link_directories(gap PUBLIC /opt/vc/lib)
-target_link_libraries(gap PUBLIC brcmGLESv2 brcmEGL ${cglm_LIBRARIES})
+
+
+FetchContent_Declare(cglm GIT_REPOSITORY https://github.com/recp/cglm.git)
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
+FetchContent_MakeAvailable(cglm json)
+
+target_include_directories(${PROJECT_NAME} PRIVATE /opt/vc/include)
+target_link_directories(${PROJECT_NAME} PRIVATE /opt/vc/lib)
+target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json cglm brcmGLESv2 brcmEGL)
+
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${PROJECT_NAME}
+)
+
