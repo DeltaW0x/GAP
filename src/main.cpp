@@ -6,10 +6,15 @@
 #include <GLES2/gl2.h>
 #include <cglm/cglm.h>
 
+#include "led-matrix.h"
 #include "utility/mesh.hpp"
 #include "objects/protogenFace.hpp"
+
 #define MATRIX_WIDTH 128
 #define MATRIX_HEIGHT 32
+
+using rgb_matrix::RGBMatrix;
+using rgb_matrix::Canvas;
 
 #pragma region EGL_CRAP
 
@@ -86,6 +91,8 @@ static const char *eglGetErrorStr()
 
 int main(int argv, char **argc)
 {
+RGBMatrix::Options defaults;
+
 #pragma region OTHER_EGL_CRAP
     EGLDisplay display;
     int major, minor;
